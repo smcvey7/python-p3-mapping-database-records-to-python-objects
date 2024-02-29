@@ -64,6 +64,17 @@ class Song:
         """
 
         all = CURSOR.execute(sql).fetchall()
-        
         cls.all = [cls.new_from_db(row) for row in all]
         return cls.all
+    
+    @classmethod
+    def find_by_name(cls, name):
+        sql = """
+            SELECT *
+            FROM songs
+            WHERE name = ?
+            LIMIT 1
+        """
+        song = CURSOR.execute(sql, (name,)).fetchone()
+
+        return cls.new_from_db(song)
